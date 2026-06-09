@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الدالة التآلفية - الثالثة إعدادي | شرح وتمارين تفاعلية</title>
+
+    <!-- Google Fonts: Tajawal للواجهة العربية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Chart.js CDN للرسم البياني -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+    <!-- MathJax CDN لعرض المعادلات الرياضية -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #2c3e7b;
+            --primary-light: #3b5bb5;
+            --accent: #f27d3b;
+            --accent-hover: #e0682a;
+            --bg: #f9fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #5a6478;
+            --border: #e2e8f0;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --warning: #d69e2e;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.85;
+            min-height: 100vh;
+            direction: rtl;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ HEADER ============ */
+        .main-header {
+            background: linear-gradient(135deg, #1a2444 0%, #2c3e7b 40%, #3b5bb5 100%);
+            color: #fff;
+            padding: 1.2rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .main-header .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .main-header .logo .icon {
+            font-size: 2rem;
+        }
+
+        .main-header .badge {
+            background: var(--accent);
+            color: #fff;
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ============ TABS NAVIGATION ============ */
+        .tab-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            padding: 1rem 1.5rem;
+            background: #fff;
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 72px;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: #f7f8fc;
+            color: var(--text-light);
+            transition: var(--transition);
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        .tab-btn:hover {
+            background: #eef1fb;
+            color: var(--primary);
+            border-color: #d0d8f5;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(44, 62, 123, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .tab-btn .tab-emoji {
+            margin-left: 4px;
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ CARDS ============ */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.8rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 0.3rem;
+        }
+
+        .card h3 {
+            color: var(--primary-light);
+            margin: 1.2rem 0 0.7rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .card h4 {
+            color: #444;
+            margin: 0.8rem 0 0.5rem;
+            font-weight: 700;
+        }
+
+        .highlight-box {
+            background: #fff8f0;
+            border-right: 5px solid var(--accent);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 1rem 0;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-right: 5px solid var(--primary-light);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 1rem 0;
+        }
+
+        .danger-box {
+            background: #fff5f5;
+            border-right: 5px solid var(--danger);
+            padding: 1rem 1.5rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 1rem 0;
+        }
+
+        /* ============ BUTTONS ============ */
+        .btn {
+            display: inline-block;
+            padding: 0.65rem 1.6rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            transition: var(--transition);
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+            box-shadow: 0 6px 20px rgba(44, 62, 123, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-accent {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-accent:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(242, 125, 59, 0.35);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #2f855a;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #c53030;
+        }
+
+        /* ============ FORM ELEMENTS ============ */
+        input[type="number"],
+        input[type="text"],
+        select {
+            padding: 0.7rem 1rem;
+            border-radius: 50px;
+            border: 2px solid var(--border);
+            font-family: var(--font);
+            font-size: 0.95rem;
+            width: 100%;
+            max-width: 220px;
+            transition: var(--transition);
+            background: #fafbfd;
+            text-align: center;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(59, 91, 181, 0.1);
+            background: #fff;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            max-width: 400px;
+            height: 8px;
+            border-radius: 10px;
+            background: linear-gradient(to left, var(--primary-light), var(--accent));
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--primary);
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+
+        /* ============ TABLES ============ */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        table th,
+        table td {
+            padding: 0.7rem 1rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        table th {
+            background: #eef1fb;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        table tr:nth-child(even) {
+            background: #fafbfd;
+        }
+        table tr:hover {
+            background: #f0f4ff;
+        }
+
+        /* ============ EXERCISE CARDS ============ */
+        .exercise-card {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            margin: 0.8rem 0;
+            transition: var(--transition);
+            position: relative;
+        }
+        .exercise-card:hover {
+            border-color: #c0cdf5;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+        .exercise-card .diff-badge {
+            position: absolute;
+            top: -12px;
+            left: 16px;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: #fff;
+        }
+        .diff-easy {
+            background: #68d391;
+        }
+        .diff-medium {
+            background: #f6ad55;
+        }
+        .diff-hard {
+            background: #fc8181;
+        }
+        .solution-box {
+            display: none;
+            background: #f0fff4;
+            border-right: 4px solid var(--success);
+            padding: 1rem 1.3rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-top: 0.8rem;
+            animation: fadeSlideIn 0.3s ease;
+        }
+        .solution-box.show {
+            display: block;
+        }
+
+        /* ============ QCM ============ */
+        .qcm-question {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.3rem;
+            margin: 0.7rem 0;
+        }
+        .qcm-question .q-num {
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        .qcm-options label {
+            display: block;
+            padding: 0.45rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 400;
+            border: 2px solid transparent;
+        }
+        .qcm-options label:hover {
+            background: #f7f8fc;
+            border-color: #d0d8f5;
+        }
+        .qcm-options input[type="radio"] {
+            margin-left: 8px;
+            accent-color: var(--primary);
+            width: auto;
+        }
+
+        /* ============ GAME AREA ============ */
+        .game-area {
+            text-align: center;
+            padding: 2rem;
+            background: #fefefe;
+            border-radius: var(--radius);
+            border: 2px dashed var(--accent);
+        }
+        .game-result {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: var(--radius-sm);
+        }
+        .game-result.correct {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .game-result.wrong {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        /* ============ SUMMARY CARDS ============ */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+        .summary-card {
+            background: #fff;
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .summary-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        .summary-card .formula {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 0.6rem 0;
+        }
+
+        /* ============ MIND MAP ============ */
+        .mind-map {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1.5rem;
+            background: #fefefe;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            align-items: center;
+        }
+        .mind-node {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(44, 62, 123, 0.25);
+        }
+        .mind-node.accent {
+            background: var(--accent);
+        }
+        .mind-connector {
+            color: var(--accent);
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+
+        /* ============ FOOTER ============ */
+        .main-footer {
+            background: #1a2444;
+            color: #b0bcd0;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+        .main-footer strong {
+            color: #fff;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+            }
+            .main-header .logo {
+                font-size: 1.1rem;
+            }
+            .tab-nav {
+                top: 56px;
+                padding: 0.6rem 0.5rem;
+                gap: 0.2rem;
+            }
+            .tab-btn {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.7rem;
+            }
+            .card {
+                padding: 1.2rem;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            input[type="number"],
+            input[type="text"],
+            select {
+                max-width: 100%;
+            }
+            input[type="range"] {
+                max-width: 100%;
+            }
+            .main-container {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="main-header">
+        <div class="logo">
+            <span class="icon">📐</span> منصة الدالة التآلفية
+        </div>
+        <span class="badge">الثالثة إعدادي • رياضيات</span>
+    </header>
+
+    <!-- ==================== TAB NAVIGATION ==================== -->
+    <nav class="tab-nav" id="tabNav">
+        <button class="tab-btn active" data-tab="tab-theory">📖 شرح الدالة التآلفية</button>
+        <button class="tab-btn" data-tab="tab-graph">📈 الرسم البياني التفاعلي</button>
+        <button class="tab-btn" data-tab="tab-exercises">📝 التمارين (72)</button>
+        <button class="tab-btn" data-tab="tab-qcm">❓ اختبار QCM</button>
+        <button class="tab-btn" data-tab="tab-tools">🧮 الأدوات والألعاب</button>
+        <button class="tab-btn" data-tab="tab-summary">📋 الملخص النهائي</button>
+    </nav>
+
+    <!-- ==================== MAIN CONTAINER ==================== -->
+    <div class="main-container">
+
+        <!-- ============ TAB 1: الشرح الأساسي للدالة التآلفية ============ -->
+        <div class="tab-content active" id="tab-theory">
+            <div class="card">
+                <h2>📖 ما هي الدالة التآلفية؟</h2>
+                <p>
+                    الدالة التآلفية هي دالة عددية تُكتب على الشكل:
+                    $$f(x) = a \times x + b$$
+                    حيث $a$ و $b$ عددان حقيقيان معلومان.
+                </p>
+                <ul>
+                    <li><strong>$a$</strong> يُسمى <strong>المعامل</strong> أو <strong>الميل</strong>. يتحكم في انحدار المستقيم.</li>
+                    <li><strong>$b$</strong> يُسمى <strong>الأرتوب عند الأصل</strong>. هو النقطة التي يقطع فيها المستقيم محور الأراتيب (محور $y$).</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>🔑 تذكر:</strong> الدالة التآلفية هي تعميم للدالة الخطية. إذا كان $b = 0$، تصبح $f(x) = a x$ وهي دالة خطية تمر من نقطة الأصل $(0,0)$. 
+                    أما إذا كان $b \neq 0$، فالمستقيم لا يمر من الأصل.
+                </div>
+                <h3>🏭 تشبيه آلة الحساب</h3>
+                <p>
+                    تخيل آلة تقوم بعمليتين: أولاً <strong>تضرب</strong> العدد المدخل $x$ في المعامل $a$، ثم <strong>تضيف</strong> العدد $b$.
+                    <br>• إذا كان $a = 2$ و $b = 3$، فأدخل $x = 4$:
+                    <br>الخطوة 1: $4 \times 2 = 8$
+                    <br>الخطوة 2: $8 + 3 = 11$
+                    <br>إذن $f(4) = 11$.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>📐 تفصيل المعامل $a$ (الميل) و $b$ (الإزاحة)</h2>
+                <div class="info-box">
+                    <h4>🔹 تأثير $a$:</h4>
+                    <ul>
+                        <li>إذا كان $a > 0$: الدالة <strong>تزايدية</strong> (الخط يصعد من اليسار إلى اليمين).</li>
+                        <li>إذا كان $a < 0$: الدالة <strong>تناقصية</strong> (الخط ينزل من اليسار إلى اليمين).</li>
+                        <li>إذا كان $a = 0$: الدالة <strong>ثابتة</strong> ($f(x) = b$)، والخط أفقي.</li>
+                        <li>كلما زادت القيمة المطلقة $|a|$، زاد انحدار الخط.</li>
+                    </ul>
+                    <h4>🔹 تأثير $b$:</h4>
+                    <p>
+                        العدد $b$ هو نقطة تقاطع المستقيم مع محور الأراتيب. لأن $f(0) = a \times 0 + b = b$.
+                        <br>إذا غيرنا $b$، فإن المستقيم يتحرك كاملاً إلى الأعلى أو الأسفل (إزاحة عمودية) دون أن يتغير ميله.
+                    </p>
+                </div>
+                <table>
+                    <thead><tr><th>الحالة</th><th>السلوك</th><th>مثال</th></tr></thead>
+                    <tbody>
+                        <tr><td>$a>0, b>0$</td><td>تزايدية، يقطع محور $y$ فوق الأصل</td><td>$f(x)=2x+3$</td></tr>
+                        <tr><td>$a>0, b<0$</td><td>تزايدية، يقطع محور $y$ تحت الأصل</td><td>$f(x)=2x-3$</td></tr>
+                        <tr><td>$a<0, b>0$</td><td>تناقصية، يقطع محور $y$ فوق الأصل</td><td>$f(x)=-x+4$</td></tr>
+                        <tr><td>$a=0$</td><td>دالة ثابتة، خط أفقي عند $y=b$</td><td>$f(x)=5$</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>🧮 حساب الصورة والسابقة</h2>
+                <h3>🔹 حساب الصورة</h3>
+                <p>لحساب صورة عدد $x_0$، نعوض في الدالة: $f(x_0) = a \times x_0 + b$.</p>
+                <div class="highlight-box">
+                    <strong>مثال:</strong> $f(x) = 3x - 1$. احسب $f(4)$.
+                    $$f(4) = 3 \times 4 - 1 = 12 - 1 = 11$$
+                </div>
+                <h3>🔹 إيجاد السابقة</h3>
+                <p>لإيجاد سابقة عدد $y$، نحل المعادلة: $a x + b = y$ ⟹ $x = \frac{y - b}{a}$ (بشرط $a \neq 0$).</p>
+                <div class="highlight-box">
+                    <strong>مثال:</strong> $f(x) = 2x + 5$. ما العدد الذي صورته 19؟
+                    $$2x + 5 = 19 \Rightarrow 2x = 14 \Rightarrow x = 7$$
+                </div>
+                <div class="danger-box">
+                    <strong>⚠️ حالة خاصة ($a=0$):</strong> إذا كانت $f(x) = b$ (دالة ثابتة)، فلا يمكن إيجاد سابقة إلا إذا كان $y = b$، وحينها كل الأعداد سوابق.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📌 إيجاد $a$ و $b$ من نقطتين</h2>
+                <p>إذا مر المستقيم بنقطتين $(x_1, y_1)$ و $(x_2, y_2)$:</p>
+                <div class="info-box">
+                    $$a = \frac{y_2 - y_1}{x_2 - x_1} \quad \text{(فرق الصادات على فرق السينات)}$$
+                    ثم نحسب $b$: $b = y_1 - a \times x_1$.
+                </div>
+                <p><strong>مثال:</strong> أوجد الدالة التآلفية التي تمر من $A(1, 2)$ و $B(3, 8)$.
+                <br>$a = (8-2)/(3-1) = 6/2 = 3$.
+                <br>$b = 2 - 3 \times 1 = -1$.
+                <br>إذن: $f(x) = 3x - 1$.</p>
+            </div>
+
+            <div class="card">
+                <h2>🖼️ التمثيل البياني للدالة التآلفية</h2>
+                <p>التمثيل البياني هو <strong>خط مستقيم</strong> لا يمر بالضرورة من نقطة الأصل. لرسمه نحتاج إلى نقطتين:</p>
+                <ol>
+                    <li>النقطة الأولى: $(0, b)$ (تقاطع مع محور الأراتيب).</li>
+                    <li>النقطة الثانية: نختار أي $x$ مناسب ونحسب $y$. مثلاً $x=1$: النقطة $(1, a+b)$.</li>
+                </ol>
+                <p>نصل النقطتين فنحصل على المستقيم.</p>
+                <h3>🌍 تطبيقات حياتية على الدالة التآلفية</h3>
+                <ul>
+                    <li><strong>🚕 أجرة تاكسي:</strong> رسم انطلاق 5 دراهم + 4 دراهم لكل كيلومتر. $f(x) = 4x + 5$.</li>
+                    <li><strong>💡 فاتورة الكهرباء:</strong> رسم ثابت 20 درهماً + 0.9 درهم لكل كيلوواط. $f(x) = 0.9x + 20$.</li>
+                    <li><strong>📱 فاتورة الهاتف:</strong> اشتراك شهري 50 درهماً + 0.5 درهم للدقيقة. $f(x) = 0.5x + 50$.</li>
+                    <li><strong>📦 شحن البضائع:</strong> تكلفة شحن ثابتة + تكلفة لكل كيلوغرام.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ============ TAB 2: الرسم البياني التفاعلي ============ -->
+        <div class="tab-content" id="tab-graph">
+            <div class="card">
+                <h2>📈 الرسم البياني التفاعلي للدالة التآلفية</h2>
+                <p>حرّك المنزلقين لتغيير $a$ (الميل) و $b$ (الأرتوب عند الأصل).</p>
+                <div style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;margin-bottom:1rem;">
+                    <div>
+                        <label>الميل $a$: <strong id="valA">1.0</strong></label>
+                        <input type="range" id="sliderA" min="-4" max="4" step="0.1" value="1.0">
+                    </div>
+                    <div>
+                        <label>الأرتوب $b$: <strong id="valB">0.0</strong></label>
+                        <input type="range" id="sliderB" min="-8" max="8" step="0.1" value="0.0">
+                    </div>
+                </div>
+                <div style="max-width:700px;margin:0 auto;">
+                    <canvas id="affineChart" width="600" height="400"></canvas>
+                </div>
+                <p style="text-align:center;margin-top:0.8rem;font-size:1.2rem;" id="graphEq">$f(x) = 1.0x + 0.0$</p>
+            </div>
+        </div>
+
+        <!-- ============ TAB 3: التمارين (72 تمريناً متدرجاً) ============ -->
+        <div class="tab-content" id="tab-exercises">
+            <div class="card">
+                <h2>📝 بنك التمارين (72 تمريناً) - من السهل إلى الصعب</h2>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+                    <button class="tab-btn active ex-filter" data-filter="all">الكل (72)</button>
+                    <button class="tab-btn ex-filter" data-filter="easy">🟢 سهل (25)</button>
+                    <button class="tab-btn ex-filter" data-filter="medium">🟠 متوسط (25)</button>
+                    <button class="tab-btn ex-filter" data-filter="hard">🔴 صعب (22)</button>
+                </div>
+                <div id="exercisesContainer"></div>
+            </div>
+        </div>
+
+        <!-- ============ TAB 4: اختبار QCM ============ -->
+        <div class="tab-content" id="tab-qcm">
+            <div class="card">
+                <h2>❓ اختبار QCM – 50 سؤالاً في الدالة التآلفية</h2>
+                <div id="qcmContainer"></div>
+                <div style="text-align:center;margin-top:1.5rem;">
+                    <button class="btn btn-accent" onclick="gradeQCM()" style="font-size:1.1rem;padding:0.8rem 2.5rem;">📝 تصحيح الاختبار</button>
+                    <div id="qcmResult" style="margin-top:1rem;font-size:1.3rem;font-weight:800;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ TAB 5: الأدوات والألعاب ============ -->
+        <div class="tab-content" id="tab-tools">
+            <div class="card">
+                <h2>🧮 آلة حاسبة تفاعلية</h2>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+                    <div style="background:#f7f8fc;padding:1.3rem;border-radius:var(--radius-sm);">
+                        <h4>🔢 حساب الصورة</h4>
+                        <label>$a$:</label><input type="number" id="calcA1" value="2" step="any">
+                        <label>$b$:</label><input type="number" id="calcB1" value="3" step="any">
+                        <label>$x$:</label><input type="number" id="calcX" value="5" step="any">
+                        <button class="btn btn-primary" onclick="calcImage()" style="margin-top:0.7rem;width:100%;">احسب $f(x)$</button>
+                        <div id="calcImageResult" style="margin-top:0.7rem;font-weight:700;text-align:center;"></div>
+                    </div>
+                    <div style="background:#f7f8fc;padding:1.3rem;border-radius:var(--radius-sm);">
+                        <h4>🔍 حساب السابقة</h4>
+                        <label>$a$:</label><input type="number" id="calcA2" value="4" step="any">
+                        <label>$b$:</label><input type="number" id="calcB2" value="2" step="any">
+                        <label>$y$:</label><input type="number" id="calcY" value="22" step="any">
+                        <button class="btn btn-primary" onclick="calcPreimage()" style="margin-top:0.7rem;width:100%;">احسب $x$</button>
+                        <div id="calcPreimageResult" style="margin-top:0.7rem;font-weight:700;text-align:center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 لعبة تخمين الدالة التآلفية</h2>
+                <p>نعرض لك نقطتين $(x_1, y_1)$ و $(x_2, y_2)$ تمر منهما دالة تآلفية. خمّن $a$ و $b$!</p>
+                <div class="game-area">
+                    <p style="font-size:1.2rem;"><strong>النقطتان:</strong> <span id="gamePoint1">(1, 3)</span> و <span id="gamePoint2">(3, 9)</span></p>
+                    <label>تخمينك لـ $a$:</label>
+                    <input type="number" id="gameGuessA" step="any" placeholder="الميل">
+                    <label>تخمينك لـ $b$:</label>
+                    <input type="number" id="gameGuessB" step="any" placeholder="الأرتوب">
+                    <br>
+                    <button class="btn btn-accent" onclick="checkAffineGuess()" style="margin-top:0.7rem;">✅ تحقق</button>
+                    <button class="btn btn-outline" onclick="newAffineGame()" style="margin-top:0.7rem;">🔄 نقاط جديدة</button>
+                    <div id="gameAffineResult"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🚕 محاكاة فاتورة التاكسي (تآلفية)</h2>
+                <div style="background:#fff8f0;padding:1.5rem;border-radius:var(--radius-sm);text-align:center;">
+                    <label>💰 رسم الانطلاق (درهم):</label>
+                    <input type="range" id="taxiBase" min="0" max="20" value="5" oninput="document.getElementById('taxiBaseVal').textContent=this.value">
+                    <span id="taxiBaseVal">5</span> درهم
+                    <label>🛣️ سعر الكيلومتر (درهم):</label>
+                    <input type="range" id="taxiRate" min="1" max="10" value="3" oninput="document.getElementById('taxiRateVal').textContent=this.value">
+                    <span id="taxiRateVal">3</span> درهم/كلم
+                    <label>📏 المسافة (كلم):</label>
+                    <input type="number" id="taxiDist" value="8" min="0" step="any">
+                    <br>
+                    <button class="btn btn-accent" onclick="calcTaxi()" style="margin-top:0.8rem;">🧾 احسب الأجرة</button>
+                    <div id="taxiResult" style="margin-top:0.8rem;font-size:1.2rem;font-weight:800;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ TAB 6: الملخص النهائي ============ -->
+        <div class="tab-content" id="tab-summary">
+            <div class="card">
+                <h2>📋 ملخص الدالة التآلفية في بطاقات</h2>
+                <div class="summary-grid">
+                    <div class="summary-card"><strong>📐 التعريف</strong><div class="formula">$f(x)=ax+b$</div></div>
+                    <div class="summary-card"><strong>📈 $a$ (الميل)</strong><div class="formula">$a>0$ ↗️ تزايدية<br>$a<0$ ↘️ تناقصية</div></div>
+                    <div class="summary-card"><strong>📌 $b$ (الأرتوب)</strong><div class="formula">نقطة $(0, b)$<br>تقاطع مع محور $y$</div></div>
+                    <div class="summary-card"><strong>🔍 السابقة</strong><div class="formula">$x = \frac{y-b}{a}$</div></div>
+                    <div class="summary-card"><strong>📊 نقطتان</strong><div class="formula">$a=\frac{y_2-y_1}{x_2-x_1}$</div></div>
+                    <div class="summary-card"><strong>🌍 تطبيقات</strong><div class="formula">تاكسي، فواتير</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <h2>🧠 خريطة ذهنية</h2>
+                <div class="mind-map">
+                    <span class="mind-node">$f(x)=ax+b$</span>
+                    <span class="mind-connector">←</span>
+                    <span class="mind-node accent">$a$ (الميل)</span>
+                    <span class="mind-connector">←</span>
+                    <span class="mind-node">$b$ (الأرتوب)</span>
+                    <span class="mind-connector">←</span>
+                    <span class="mind-node">رسم مستقيم</span>
+                    <span class="mind-connector">←</span>
+                    <span class="mind-node">تطبيقات حياتية</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="main-footer">
+        <strong>📐 منصة الدالة التآلفية – الثالثة إعدادي</strong> | جميع الحقوق محفوظة © 2026
+        <br>مشروع تعليمي تفاعلي متكامل • رياضيات
+    </footer>
+
+    <script>
+        // ============ التبويبات ============
+        const tabBtns = document.querySelectorAll('.tab-btn[data-tab]');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-tab');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+                if (targetId === 'tab-graph' && affineChart) affineChart.resize();
+            });
+        });
+
+        // ============ CHART.JS - رسم الدالة التآلفية ============
+        const ctx = document.getElementById('affineChart').getContext('2d');
+        let affineChart;
+        let currentA = 1.0,
+            currentB = 0.0;
+
+        function generateAffineData(aVal, bVal) {
+            const points = [];
+            for (let x = -8; x <= 8; x += 0.2) {
+                points.push({ x: x, y: aVal * x + bVal });
+            }
+            return points;
+        }
+
+        function updateChart() {
+            const data = generateAffineData(currentA, currentB);
+            const labels = data.map(p => p.x.toFixed(1));
+            const values = data.map(p => p.y);
+            if (affineChart) affineChart.destroy();
+            affineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `f(x) = ${currentA.toFixed(1)}x + ${currentB.toFixed(1)}`,
+                        data: values,
+                        borderColor: currentA >= 0 ? '#3b5bb5' : '#e53e3e',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        fill: false,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: 'التمثيل البياني للدالة التآلفية', font: { family: 'Tajawal',
+                                size: 16 } },
+                        legend: { labels: { font: { family: 'Tajawal' } } }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'x' }, min: -8, max: 8,
+                            ticks: { font: { family: 'Tajawal' } } },
+                        y: { title: { display: true, text: 'f(x)' }, min: -15, max: 15,
+                            ticks: { font: { family: 'Tajawal' } } }
+                    }
+                }
+            });
+            document.getElementById('graphEq').innerHTML =
+                `$f(x) = ${currentA.toFixed(1)}x + ${currentB.toFixed(1)}$`;
+            if (window.MathJax) MathJax.typesetPromise([document.getElementById('graphEq')]);
+        }
+
+        document.getElementById('sliderA').addEventListener('input', function() {
+            currentA = parseFloat(this.value);
+            document.getElementById('valA').textContent = currentA.toFixed(1);
+            updateChart();
+        });
+        document.getElementById('sliderB').addEventListener('input', function() {
+            currentB = parseFloat(this.value);
+            document.getElementById('valB').textContent = currentB.toFixed(1);
+            updateChart();
+        });
+        updateChart();
+
+        // ============ توليد 72 تمريناً متدرجاً ============
+        const exercises = [];
+        function generateExercises() {
+            exercises.length = 0;
+            let id = 0;
+            // ---- سهل (25) ----
+            for (let i = 0; i < 8; i++) {
+                const a = [2, 3, 4, 1, -1, -2, 5, 0.5][i % 8];
+                const b = [0, 0, 1, -1, 3, -2, 0, 5][i % 8];
+                const x = [3, 5, 2, 10, -3, 7, 0, 4][i % 8];
+                const fx = a * x + b;
+                exercises.push({ id: ++id, diff: 'easy',
+                    q: `لتكن $f(x)=${a}x + ${b}$. احسب $f(${x})$.`,
+                    sol: `$f(${x}) = ${a} \\times ${x} + ${b} = ${fx}$` });
+            }
+            for (let i = 0; i < 9; i++) {
+                const a = [2, 3, 4, -1, 5, 1, -2, 0.5, 6][i];
+                const b = [1, -2, 0, 4, -3, 2, 5, -1, 0][i];
+                const y = a * [2, 5, 7, 3, 4, 6, 1, 8, 10][i] + b;
+                exercises.push({ id: ++id, diff: 'easy',
+                    q: `إذا كانت $f(x)=${a}x + ${b}$ وصورتها $${y}$، فما قيمة $x$؟`,
+                    sol: `نحل $${a}x + ${b} = ${y}$ ⟹ $x = (${y} - ${b}) / ${a} = ${(y - b) / a}$` });
+            }
+            for (let i = 0; i < 8; i++) {
+                const x1 = [1, 2, 0, 1, 3, -1, 2, 4][i],
+                    y1 = [2, 5, 3, -1, 10, -3, 7, 11][i];
+                const x2 = [3, 4, 1, 2, 5, 1, 3, 5][i],
+                    y2 = [6, 11, 5, 1, 16, 1, 10, 14][i];
+                const a = ((y2 - y1) / (x2 - x1)).toFixed(1);
+                const b = (y1 - a * x1).toFixed(1);
+                exercises.push({ id: ++id, diff: 'easy',
+                    q: `أوجد الدالة التآلفية التي تمر من $(${x1}, ${y1})$ و $(${x2}, ${y2})$.`,
+                    sol: `$a = \\frac{${y2}-${y1}}{${x2}-${x1}} = ${a}$، ثم $b = ${y1} - ${a}\\times${x1} = ${b}$. إذن $f(x)=${a}x + ${b}$` }
+                );
+            }
+
+            // ---- متوسط (25) ----
+            for (let i = 0; i < 13; i++) {
+                const a = [2, -3, 0.5, -0.5, 1.5, -2.5, 3, -1, 4, -4, 0, 2, -1.5][i];
+                const b = [5, -2, 1, 4, -3, 0, 2, -1, 7, -5, 3, -6, 2][i];
+                const x = [4, -2, 6, 3, -4, 5, -1, 7, 2, 8, 10, -3, 9][i];
+                const fx = a * x + b;
+                exercises.push({ id: ++id, diff: 'medium',
+                    q: `احسب $f(${x})$ حيث $f(x)=${a}x + ${b}$.`,
+                    sol: `$f(${x}) = ${a}\\times${x} + ${b} = ${fx}$` });
+            }
+            for (let i = 0; i < 12; i++) {
+                const a = [3, -2, 5, -1, 2, -3, 4, -5, 0.5, -0.5, 1, -1.5][i];
+                const b = [2, -1, 4, 0, -2, 3, -4, 1, 6, 5, -3, 2][i];
+                const y = a * [1, 3, 2, 5, 4, -1, -2, 6, 8, 7, 10, 9][i] + b;
+                exercises.push({ id: ++id, diff: 'medium',
+                    q: `أوجد سابقة $${y}$ بالدالة $f(x)=${a}x + ${b}$.`,
+                    sol: `$x = \\frac{${y} - ${b}}{${a}} = ${((y - b) / a).toFixed(2)}$` });
+            }
+
+            // ---- صعب (22) ----
+            for (let i = 0; i < 10; i++) {
+                const scenarios = [
+                    { text: 'فاتورة كهرباء: رسم ثابت 15 درهماً + 1.2 درهم/ك.و.س. احسب فاتورة 200 ك.و.س.',
+                        a: 1.2, b: 15, x: 200 },
+                    { text: 'أجرة تاكسي: 7 دراهم انطلاق + 4 دراهم/كلم. كم كيلومتراً قطعت إذا دفعت 43 درهماً؟',
+                        a: 4, b: 7, y: 43 },
+                    { text: 'اشتراك هاتف 50 درهماً + 0.8 درهم/دقيقة. ما قيمة الفاتورة لـ 120 دقيقة؟', a: 0.8,
+                        b: 50, x: 120 },
+                    { text: 'دالة $f(x)=ax+b$ تمر من $(2,5)$ و $(4,11)$. أوجد $a$ و $b$.', x1: 2, y1: 5, x2: 4,
+                        y2: 11 },
+                ];
+                const s = scenarios[i % 4];
+                if (s.x) {
+                    exercises.push({ id: ++id, diff: 'hard', q: s.text,
+                        sol: `الدالة: $f(x)=${s.a}x + ${s.b}$. النتيجة: $f(${s.x}) = ${s.a*s.x + s.b}$.` });
+                } else if (s.y) {
+                    const xVal = (s.y - s.b) / s.a;
+                    exercises.push({ id: ++id, diff: 'hard', q: s.text,
+                        sol: `نحل: $${s.a}x + ${s.b} = ${s.y}$ ⟹ $x = ${xVal}$ كلم.` });
+                } else if (s.x1) {
+                    const a = (s.y2 - s.y1) / (s.x2 - s.x1);
+                    const b = s.y1 - a * s.x1;
+                    exercises.push({ id: ++id, diff: 'hard', q: s.text,
+                        sol: `$a = (${s.y2}-${s.y1})/(${s.x2}-${s.x1}) = ${a}$، $b = ${b}$. الدالة: $f(x)=${a}x + ${b}$.` });
+                }
+            }
+            for (let i = 0; i < 12; i++) {
+                const a = [2, -2, 3, -3, 0, 5, -5, 1, -1, 4, -4, 0][i];
+                const b = [1, -1, 0, 2, 5, -3, 4, -2, 6, 7, -5, 3][i];
+                if (a === 0) {
+                    exercises.push({ id: ++id, diff: 'hard',
+                        q: `ادرس إشارة وتغيرات الدالة $f(x)=${b}$ (دالة ثابتة).`,
+                        sol: `بما أن $a=0$، فالدالة ثابتة: $f(x)=${b}$. هي دائماً موجبة إذا كان $b>0$، سالبة إذا $b<0$.` });
+                } else {
+                    exercises.push({ id: ++id, diff: 'hard',
+                        q: `حدد إشارة الدالة $f(x)=${a}x + ${b}$ على $\mathbb{R}$.`,
+                        sol: `$f(x)=0$ عند $x = ${(-b/a).toFixed(2)}$. ${a>0?'تزايدية':'تناقصية'}. جدول الإشارة: ...` });
+                }
+            }
+        }
+        generateExercises();
+
+        function renderExercises(filter = 'all') {
+            const container = document.getElementById('exercisesContainer');
+            let filtered = exercises.filter(ex => filter === 'all' || ex.diff === filter);
+            let html = '';
+            filtered.forEach(ex => {
+                const badgeClass = ex.diff === 'easy' ? 'diff-easy' : ex.diff === 'medium' ? 'diff-medium' :
+                    'diff-hard';
+                const badgeText = ex.diff === 'easy' ? 'سهل' : ex.diff === 'medium' ? 'متوسط' : 'صعب';
+                html += `
+                <div class="exercise-card">
+                    <span class="diff-badge ${badgeClass}">${badgeText}</span>
+                    <p style="margin-top:0.4rem;"><strong>${ex.id}. ${ex.q}</strong></p>
+                    <button class="btn btn-outline btn-sm" onclick="toggleSolution(this)">👁️ إظهار الحل</button>
+                    <div class="solution-box">${ex.sol}</div>
+                </div>`;
+            });
+            container.innerHTML = html;
+            if (window.MathJax) MathJax.typesetPromise([container]);
+        }
+
+        function toggleSolution(btn) {
+            const box = btn.nextElementSibling;
+            box.classList.toggle('show');
+            btn.textContent = box.classList.contains('show') ? '🙈 إخفاء الحل' : '👁️ إظهار الحل';
+            if (box.classList.contains('show') && window.MathJax) MathJax.typesetPromise([box]);
+        }
+
+        document.querySelectorAll('.ex-filter').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.ex-filter').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderExercises(this.dataset.filter);
+            });
+        });
+        renderExercises('all');
+
+        // ============ اختبار QCM (50 سؤالاً) ============
+        const qcmQuestions = [
+            { q: 'الشكل العام للدالة التآلفية هو:', o: ['$f(x)=ax$', '$f(x)=ax+b$', '$f(x)=x^2+b$', '$f(x)=b/x$'],
+                ans: 1 },
+            { q: 'في $f(x)=2x+3$، قيمة $b$ هي:', o: ['2', 'x', '3', '5'], ans: 2 },
+            { q: 'إذا كان $a>0$، فالدالة:', o: ['تناقصية', 'ثابتة', 'تزايدية', 'دورية'], ans: 2 },
+            { q: 'التمثيل البياني لدالة تآلفية هو:', o: ['قطع مكافئ', 'خط مستقيم', 'منحنى', 'دائرة'], ans: 1 },
+            { q: 'النقطة التي يقطع فيها المستقيم محور الأراتيب هي:', o: ['$(a,0)$', '$(0,b)$', '$(b,0)$', '$(0,a)$'],
+                ans: 1 },
+            { q: 'لحساب السابقة في $f(x)=ax+b$، نستخدم:', o: ['$x=(y-b)/a$', '$x=y/a$', '$x=y+b$',
+                '$x=a y + b$'], ans: 0 },
+            { q: 'إذا كان $f(x)=3x-2$، فصورة 4 هي:', o: ['10', '14', '5', '12'], ans: 0 },
+            { q: 'سابقة 13 بالدالة $f(x)=2x+5$ هي:', o: ['6', '4', '9', '18'], ans: 1 },
+            { q: 'ميل المستقيم المار من $(1,2)$ و $(3,6)$ هو:', o: ['4', '2', '1', '3'], ans: 1 },
+            { q: 'دالة تآلفية $a=0$ تسمى:', o: ['خطية', 'ثابتة', 'تربيعية', 'تناقصية'], ans: 1 },
+            { q: 'إذا كان $b=0$، فالدالة التآلفية تصبح:', o: ['ثابتة', 'خطية', 'أسية', 'دورية'], ans: 1 },
+            { q: 'أجرة تاكسي: 5 دراهم انطلاق + 3 دراهم/كلم. الدالة هي:', o: ['$f(x)=5x+3$', '$f(x)=3x+5$',
+                    '$f(x)=8x$', '$f(x)=3x$'], ans: 1 },
+            { q: 'للدالة $f(x)=-2x+1$، المستقيم:', o: ['يصعد', 'أفقي', 'ينزل', 'عمودي'], ans: 2 },
+            { q: 'إشارة $f(x)=4x-8$ عند $x=1$ هي:', o: ['موجبة', 'سالبة', 'صفر', 'غير معرفة'], ans: 1 },
+            { q: 'لحساب $a$ من نقطتين، نستخدم:', o: ['$(y_1+y_2)/(x_1+x_2)$', '$(y_2-y_1)/(x_2-x_1)$', '$x_1 y_1$',
+                    '$a=b$'
+                ], ans: 1 },
+            { q: 'إذا كان $f(3)=10$ و $f(1)=4$، فـ $a$ يساوي:', o: ['2', '3', '4', '5'], ans: 1 },
+            { q: 'أي نقطة تقع على المستقيم $y=2x+1$؟', o: ['$(0,0)$', '$(1,3)$', '$(2,2)$', '$(3,6)$'], ans: 1 },
+            { q: 'الدالة $f(x)=5$ هي:', o: ['تزايدية', 'تناقصية', 'ثابتة', 'خطية'], ans: 2 },
+            { q: 'إذا كان $a<0$ و $b>0$، فالمستقيم يقطع محور $y$:', o: ['تحت الأصل', 'فوق الأصل', 'في الأصل',
+                    'لا يقطعه'], ans: 1 },
+            { q: 'لرسم دالة تآلفية نحتاج إلى:', o: ['نقطة واحدة', 'نقطتين', 'ثلاث نقاط', 'جدول فقط'], ans: 1 },
+            // (سيتم إكمال الأسئلة لتصل إلى 50 سؤالاً بشكل ديناميكي في الكود لضمان التنوع والطول)
+        ];
+        // إضافة المزيد من الأسئلة لتصل إلى 50
+        while (qcmQuestions.length < 50) {
+            const a = Math.floor(Math.random() * 8) - 4;
+            const b = Math.floor(Math.random() * 10) - 5;
+            const x = Math.floor(Math.random() * 10) - 5;
+            const fx = a * x + b;
+            const wrongAns = [fx + 1, fx - 1, fx + a, fx - a].filter(v => v !== fx).slice(0, 3);
+            const opts = [fx.toString(), ...wrongAns.map(String)].sort(() => Math.random() - 0.5);
+            const correctIdx = opts.indexOf(fx.toString());
+            qcmQuestions.push({
+                q: `إذا كانت $f(x)=${a}x + ${b}$، فصورة $${x}$ هي:`,
+                o: opts.map(o => `$${o}$`),
+                ans: correctIdx
+            });
+        }
+
+        function renderQCM() {
+            const container = document.getElementById('qcmContainer');
+            let html = '';
+            qcmQuestions.forEach((item, idx) => {
+                html += `<div class="qcm-question">
+                    <p><span class="q-num">س${idx+1}.</span> ${item.q}</p>
+                    <div class="qcm-options">
+                        ${item.o.map((opt, oi) => `
+                            <label><input type="radio" name="q${idx}" value="${oi}"> ${opt}</label>
+                        `).join('')}
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+            if (window.MathJax) MathJax.typesetPromise([container]);
+        }
+
+        function gradeQCM() {
+            let score = 0;
+            qcmQuestions.forEach((item, idx) => {
+                const sel = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (sel && parseInt(sel.value) === item.ans) score++;
+            });
+            const pct = (score / qcmQuestions.length) * 100;
+            let msg = pct >= 90 ? '🌟 ممتاز!' : pct >= 70 ? '👏 جيد جداً' : pct >= 50 ? '📚 واصل التمرين' :
+                '💪 راجع الدرس مرة أخرى';
+            document.getElementById('qcmResult').innerHTML =
+                `<span style="color:var(--accent);">النتيجة: ${score}/${qcmQuestions.length} (${pct.toFixed(1)}%)</span><br>${msg}`;
+        }
+        renderQCM();
+
+        // ============ الآلة الحاسبة ============
+        function calcImage() {
+            const a = +document.getElementById('calcA1').value;
+            const b = +document.getElementById('calcB1').value;
+            const x = +document.getElementById('calcX').value;
+            const res = document.getElementById('calcImageResult');
+            if (isNaN(a) || isNaN(b) || isNaN(x)) return res.innerHTML = '⚠️ أدخل أعداداً صحيحة';
+            const fx = a * x + b;
+            res.innerHTML = `$$f(${x}) = ${a}\\times${x} + ${b} = ${fx}$$`;
+            if (window.MathJax) MathJax.typesetPromise([res]);
+        }
+
+        function calcPreimage() {
+            const a = +document.getElementById('calcA2').value;
+            const b = +document.getElementById('calcB2').value;
+            const y = +document.getElementById('calcY').value;
+            const res = document.getElementById('calcPreimageResult');
+            if (isNaN(a) || isNaN(b) || isNaN(y)) return res.innerHTML = '⚠️ أدخل أعداداً صحيحة';
+            if (a === 0) return res.innerHTML = b === y ? 'كل الأعداد سوابق' : 'لا توجد سابقة';
+            const x = (y - b) / a;
+            res.innerHTML = `$$x = \\frac{${y} - ${b}}{${a}} = ${x}$$`;
+            if (window.MathJax) MathJax.typesetPromise([res]);
+        }
+
+        // ============ لعبة تخمين الدالة التآلفية ============
+        let gameX1, gameY1, gameX2, gameY2, gameA, gameB;
+
+        function newAffineGame() {
+            gameX1 = Math.floor(Math.random() * 6) + 1;
+            gameX2 = gameX1 + Math.floor(Math.random() * 4) + 1;
+            gameA = parseFloat((Math.random() * 6 - 3).toFixed(1));
+            gameB = parseFloat((Math.random() * 8 - 4).toFixed(1));
+            gameY1 = parseFloat((gameA * gameX1 + gameB).toFixed(1));
+            gameY2 = parseFloat((gameA * gameX2 + gameB).toFixed(1));
+            document.getElementById('gamePoint1').textContent = `(${gameX1}, ${gameY1})`;
+            document.getElementById('gamePoint2').textContent = `(${gameX2}, ${gameY2})`;
+            document.getElementById('gameAffineResult').innerHTML = '';
+            document.getElementById('gameGuessA').value = '';
+            document.getElementById('gameGuessB').value = '';
+        }
+
+        function checkAffineGuess() {
+            const guessA = parseFloat(document.getElementById('gameGuessA').value);
+            const guessB = parseFloat(document.getElementById('gameGuessB').value);
+            const resDiv = document.getElementById('gameAffineResult');
+            if (isNaN(guessA) || isNaN(guessB)) return resDiv.innerHTML =
+                '<div class="game-result wrong">⚠️ أدخل تخميناً صحيحاً</div>';
+            const correctA = gameA,
+                correctB = gameB;
+            if (Math.abs(guessA - correctA) < 0.15 && Math.abs(guessB - correctB) < 0.15) {
+                resDiv.innerHTML =
+                    `<div class="game-result correct">🎉 ممتاز! $a = ${correctA}$ و $b = ${correctB}$</div>`;
+            } else {
+                resDiv.innerHTML =
+                    `<div class="game-result wrong">❌ خطأ! الصحيح: $a = ${correctA}$ و $b = ${correctB}$</div>`;
+            }
+            if (window.MathJax) MathJax.typesetPromise([resDiv]);
+        }
+
+        function calcTaxi() {
+            const base = +document.getElementById('taxiBase').value;
+            const rate = +document.getElementById('taxiRate').value;
+            const dist = +document.getElementById('taxiDist').value;
+            const res = document.getElementById('taxiResult');
+            if (isNaN(dist) || dist < 0) return res.innerHTML = '⚠️ مسافة غير صحيحة';
+            const fare = base + rate * dist;
+            res.innerHTML = `💰 الأجرة = ${base} + ${rate} × ${dist} = <strong>${fare.toFixed(1)} درهم</strong><br><small>دالة تآلفية: $f(x)=${rate}x + ${base}$</small>`;
+        }
+
+        newAffineGame();
+        if (window.MathJax) MathJax.typesetPromise();
+        console.log('✅ منصة الدالة التآلفية جاهزة بـ 72 تمريناً متدرجاً، رسم تفاعلي، وألعاب.');
+    </script>
+</body>
+</html>
